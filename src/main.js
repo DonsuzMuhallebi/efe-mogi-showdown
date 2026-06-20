@@ -430,7 +430,7 @@ if(window.desktop&&window.desktop.isDesktop){$('displayRow').style.display='';$(
   if(window.desktop.onFullscreen)window.desktop.onFullscreen(on=>dispMode(on?'full':lastWin));}
 
 /* version label (real installed version on desktop, fallback in browser) */
-const VERSION=(window.desktop&&window.desktop.version)||'1.0.2';
+const VERSION=(window.desktop&&window.desktop.version)||'1.0.3';
 if($('verTag'))$('verTag').textContent='v'+VERSION;
 
 /* boot splash + in-game updater card */

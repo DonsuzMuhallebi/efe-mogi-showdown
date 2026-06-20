@@ -1,6 +1,6 @@
 {
   "name": "efe-mogi-showdown",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A silly little duel for two — Efe & Mogi",
   "main": "electron/main.js",
   "author": "Efe",
