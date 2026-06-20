@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "gen:sprites": "node tools/gen-base-sprites.mjs",
     "start": "npm run build && electron .",
     "pack": "npm run build && electron-builder --win nsis-web --publish never",
     "portable": "npm run build && electron-builder --win portable --publish never",
@@ -54,12 +55,14 @@
     ]
   },
   "devDependencies": {
+    "@napi-rs/canvas": "^1.0.0",
     "electron": "^31.7.7",
     "electron-builder": "^24.13.3",
     "png-to-ico": "^3.0.1",
     "vite": "^5.4.10"
   },
   "dependencies": {
-    "electron-updater": "^6.8.9"
+    "electron-updater": "^6.8.9",
+    "pixi.js": "^8.19.0"
   }
 }
