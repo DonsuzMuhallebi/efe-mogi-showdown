@@ -1,0 +1,60 @@
+{
+  "name": "efe-mogi-showdown",
+  "version": "1.0.0",
+  "description": "A silly little duel for two — Efe & Mogi",
+  "main": "main.js",
+  "author": "Efe",
+  "repository": "https://github.com/DonsuzMuhallebi/efe-mogi-showdown",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --win nsis-web --publish never",
+    "portable": "electron-builder --win portable --publish never",
+    "publish": "electron-builder --win nsis-web --publish always"
+  },
+  "build": {
+    "appId": "com.efemogi.showdown",
+    "productName": "Efe and Mogi Showdown",
+    "files": [
+      "index.html",
+      "main.js",
+      "package.json",
+      "icon.png",
+      "icon.ico"
+    ],
+    "win": {
+      "target": "nsis-web",
+      "icon": "icon.ico"
+    },
+    "nsisWeb": {
+      "artifactName": "EfeMogiShowdown-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Efe & Mogi Showdown",
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "installerHeaderIcon": "icon.ico",
+      "include": "build/installer.nsh"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "DonsuzMuhallebi",
+        "repo": "efe-mogi-showdown",
+        "releaseType": "release"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3",
+    "png-to-ico": "^3.0.1"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9"
+  }
+}
