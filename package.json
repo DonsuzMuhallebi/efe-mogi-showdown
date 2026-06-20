@@ -2,29 +2,32 @@
   "name": "efe-mogi-showdown",
   "version": "1.0.2",
   "description": "A silly little duel for two — Efe & Mogi",
-  "main": "main.js",
+  "main": "electron/main.js",
   "author": "Efe",
   "repository": "https://github.com/DonsuzMuhallebi/efe-mogi-showdown",
   "scripts": {
-    "start": "electron .",
-    "pack": "electron-builder --win nsis-web --publish never",
-    "portable": "electron-builder --win portable --publish never",
-    "publish": "electron-builder --win nsis-web --publish always"
+    "dev": "vite",
+    "build": "vite build",
+    "start": "npm run build && electron .",
+    "pack": "npm run build && electron-builder --win nsis-web --publish never",
+    "portable": "npm run build && electron-builder --win portable --publish never",
+    "publish": "npm run build && electron-builder --win nsis-web --publish always"
   },
   "build": {
     "appId": "com.efemogi.showdown",
     "productName": "Efe and Mogi Showdown",
+    "directories": {
+      "output": "release"
+    },
     "files": [
-      "index.html",
-      "main.js",
-      "preload.js",
+      "dist/**/*",
+      "electron/**/*",
       "package.json",
-      "icon.png",
-      "icon.ico"
+      "assets/**/*"
     ],
     "win": {
       "target": "nsis-web",
-      "icon": "icon.ico"
+      "icon": "assets/icon.ico"
     },
     "nsisWeb": {
       "artifactName": "EfeMogiShowdown-Setup.${ext}"
@@ -36,9 +39,9 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Efe & Mogi Showdown",
-      "installerIcon": "icon.ico",
-      "uninstallerIcon": "icon.ico",
-      "installerHeaderIcon": "icon.ico",
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
       "include": "build/installer.nsh"
     },
     "publish": [
@@ -53,7 +56,8 @@
   "devDependencies": {
     "electron": "^31.7.7",
     "electron-builder": "^24.13.3",
-    "png-to-ico": "^3.0.1"
+    "png-to-ico": "^3.0.1",
+    "vite": "^5.4.10"
   },
   "dependencies": {
     "electron-updater": "^6.8.9"

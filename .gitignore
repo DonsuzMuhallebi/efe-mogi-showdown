@@ -1,5 +1,6 @@
 node_modules/
 dist/
+release/
 *.log
 art*.b64
 preview_*.png

@@ -1,33 +1,59 @@
-# Efe & Mogi — Showdown 🇹🇷❤️🇮🇩
+# Efe & Mogi — Showdown 💞
 
-A cozy, silly, competitive 2-player web game made for Efe & Mogi. One HTML file, plays online over a room code.
+A silly little duel for two — an online party game (best-of tournament of mini-games,
+dare cards, emotes) built as a gift for Efe & Mogi. Plays as a Windows desktop app
+with in-app auto-updates.
 
-## How to play / Nasıl oynanır
+## Stack
 
-1. **One of you** opens `index.html` (double-click) → **CREATE ROOM** → you get a 4-letter **code**.
-2. **The other** opens `index.html` → **JOIN ROOM** → type the code → **CONNECT**.
-3. In the lobby (Player 1 vs Player 2), the joiner taps **READY**, then the host taps **START SHOWDOWN**.
-4. Before each round you both read the rules and tap **READY**.
-5. **First to 3 round-wins is champion** 👑. After a short countdown the **loser's dare card** appears for both of you.
+- **Vanilla JS** game in `src/` (ES modules), bundled by **Vite**
+- **Electron** desktop shell + **electron-updater** for in-app auto-updates
+- Packaged & published with **electron-builder** (small `nsis-web` web installer)
+- P2P multiplayer over **PeerJS** (4-letter room code, no server)
 
-## The 6 mini-games (random order)
-- **Quick Quiz** ❓ — first to tap the correct answer wins (Stardew + 🇹🇷🇮🇩 trivia).
-- **Kebab vs Rendang** 🍳 — walk the garden, grab only **your glowing** ingredients, drop them in **your pot**. First full recipe wins.
-- **Tic-Tac-Toe** ⭕ — classic X (Efe) vs O (Mogi), 3 in a row.
-- **Durian Rain** 🌧️ — dodge falling chaos, catch 💖 for lives, most lives wins.
-- **TNT Tag** 💣 — bomb with a hidden timer; touch to pass it; holding it when it blows = you lose.
-- **Snowball Fight** ⛄ — move & throw snowballs (⛄ button / Space); first one hit loses.
+## Project structure
 
-## Settings ⚙️ (top-right)
-- **Sound** & **Music** volume sliders.
-- **Language**: English / Türkçe / Bahasa Indonesia.
+```
+EfeMogiShowdown/
+├── index.html            # Vite entry: <head> + game markup + module script
+├── vite.config.js        # renderer build (base:'./' for file:// in Electron)
+├── package.json          # scripts + electron-builder config
+├── src/                  # renderer (the game)
+│   ├── main.js           #   core: themes, i18n logic, screens, networking, games, UI, boot
+│   ├── styles.css        #   all styles (cqmin units, theme CSS vars)
+│   ├── i18n.js           #   STR translation table (EN / TR / ID)
+│   ├── audio.js          #   Sound — WebAudio SFX + music engine
+│   └── characters.js     #   procedural Efe/Mogi sprites + canvas draw helpers
+├── electron/
+│   ├── main.js           # main process: window, auto-update, display modes, IPC
+│   └── preload.js        # contextBridge → window.desktop
+├── assets/               # icon.png / icon.ico (app + installer icons)
+├── build/installer.nsh   # NSIS custom install dir + shortcut
+├── dist/                 # Vite build output (gitignored)
+└── release/              # electron-builder installers (gitignored)
+```
 
-**Controls:** WASD / arrows / drag to move • tap answers & grid for Quiz/XOX • ⛄ button or Space to throw.
-**💖 SEND LOVE** appears between rounds & on the champion screen — it pops up on your partner's screen.
+## Develop
 
-## Notes
-- Needs internet (peer-to-peer; no server, no signup). Window scales to your screen.
-- Modern browser (Chrome/Edge/Firefox). If connecting fails, both reload and re-enter the code.
-- `server.js` is optional dev tooling; the game runs by just opening `index.html`.
+```bash
+npm install
+npm run dev      # Vite dev server in the browser — fast UI iteration
+npm start        # build the renderer then launch the Electron app
+```
 
-Made with ❤. Have fun, you two.
+## Build & release
+
+```bash
+npm run pack     # build + package the installer locally (no upload) → release/
+npm run publish  # build + package + publish a GitHub release (the auto-update feed)
+```
+
+`npm run publish` needs `GH_TOKEN` in the environment. **Bump `version` in
+`package.json` before publishing** — installed apps auto-update to the newest release.
+
+## Gameplay
+
+Best-of tournament (first to 3 by default) of random mini-games — quiz, kebab-vs-rendang,
+tic-tac-toe, falling chaos, TNT tag, snowball, tug-of-war, memory, simon. Loser draws a
+dare card. One player CREATEs a room (gets a 4-letter code), the other JOINs with it.
+Settings ⚙ cover sound, theme, language (EN/TR/ID) and (desktop) display mode.

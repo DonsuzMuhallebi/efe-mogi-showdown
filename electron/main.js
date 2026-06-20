@@ -1,4 +1,6 @@
 // Electron main process — desktop window + auto-update + display controls.
+// The renderer is built by Vite (npm run build → dist/). In dev it loads the Vite dev server
+// when VITE_DEV_SERVER_URL is set; otherwise it loads the built dist/index.html.
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { autoUpdater } = require('electron-updater');
@@ -13,13 +15,17 @@ function createWindow() {
     title: 'Efe & Mogi — Showdown',
     backgroundColor: '#241a0e',
     autoHideMenuBar: true,
-    icon: path.join(__dirname, 'icon.png'),
+    icon: path.join(__dirname, '..', 'assets', 'icon.png'),
     webPreferences: {
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js')
     }
   });
-  win.loadFile('index.html');
+
+  const devUrl = process.env.VITE_DEV_SERVER_URL;
+  if (devUrl) win.loadURL(devUrl);
+  else win.loadFile(path.join(__dirname, '..', 'dist', 'index.html'));
+
   win.maximize(); // fill the screen by default
   // Start the update check only once the game UI is ready to receive events.
   win.webContents.once('did-finish-load', startUpdates);
@@ -28,7 +34,7 @@ function createWindow() {
   win.on('leave-full-screen', () => { if (win) win.webContents.send('win-fs-state', false); });
 }
 
-// Auto-update wired to the in-game card: stream availability + progress + ready.
+// Auto-update wired to the in-game card: stream availability + progress + ready + none.
 function startUpdates() {
   try {
     autoUpdater.autoDownload = true;
@@ -45,17 +51,8 @@ function startUpdates() {
 // Display controls from the in-game settings.
 ipcMain.on('win-fullscreen', (e, on) => { if (win) win.setFullScreen(on); });
 ipcMain.on('win-toggle-fullscreen', () => { if (win) win.setFullScreen(!win.isFullScreen()); });
-ipcMain.on('win-maximize', () => {
-  if (!win) return;
-  win.setFullScreen(false);
-  win.maximize();
-});
-ipcMain.on('win-windowed', () => {
-  if (!win) return;
-  win.setFullScreen(false);
-  win.unmaximize();
-  win.center();
-});
+ipcMain.on('win-maximize', () => { if (!win) return; win.setFullScreen(false); win.maximize(); });
+ipcMain.on('win-windowed', () => { if (!win) return; win.setFullScreen(false); win.unmaximize(); win.center(); });
 
 // Expose the installed app version to the in-game version label.
 ipcMain.on('get-version', (e) => { e.returnValue = app.getVersion(); });
