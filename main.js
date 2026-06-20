@@ -1,23 +1,38 @@
-// Electron main process — wraps the game in a desktop window + auto-update.
-const { app, BrowserWindow, dialog } = require('electron');
+// Electron main process — desktop window + auto-update + display controls.
+const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 const path = require('path');
 const { autoUpdater } = require('electron-updater');
 
 let win;
 function createWindow() {
   win = new BrowserWindow({
-    width: 540,
-    height: 800,
-    minWidth: 380,
-    minHeight: 560,
+    width: 1280,
+    height: 760,
+    minWidth: 420,
+    minHeight: 360,
     title: 'Efe & Mogi — Showdown',
     backgroundColor: '#241a0e',
     autoHideMenuBar: true,
     icon: path.join(__dirname, 'icon.png'),
-    webPreferences: { contextIsolation: true }
+    webPreferences: {
+      contextIsolation: true,
+      preload: path.join(__dirname, 'preload.js')
+    }
   });
   win.loadFile('index.html');
+  win.maximize(); // fill the screen by default
 }
+
+// Display controls from the in-game settings.
+ipcMain.on('win-fullscreen', (e, on) => { if (win) win.setFullScreen(on); });
+ipcMain.on('win-toggle-fullscreen', () => { if (win) win.setFullScreen(!win.isFullScreen()); });
+ipcMain.on('win-size', (e, { w, h }) => {
+  if (!win || !w || !h) return;
+  win.setFullScreen(false);
+  win.unmaximize();
+  win.setSize(w, h);
+  win.center();
+});
 
 app.whenReady().then(() => {
   createWindow();
@@ -25,7 +40,7 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 
-  // Auto-update: on launch, check GitHub releases, download, then offer restart.
+  // Auto-update: check GitHub releases on launch, download, offer restart.
   try {
     autoUpdater.autoDownload = true;
     autoUpdater.on('update-downloaded', (info) => {

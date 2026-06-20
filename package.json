@@ -1,6 +1,6 @@
 {
   "name": "efe-mogi-showdown",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A silly little duel for two — Efe & Mogi",
   "main": "main.js",
   "author": "Efe",
@@ -17,6 +17,7 @@
     "files": [
       "index.html",
       "main.js",
+      "preload.js",
       "package.json",
       "icon.png",
       "icon.ico"
