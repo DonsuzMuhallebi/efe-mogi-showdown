@@ -337,14 +337,14 @@ const STR={
   start:{en:"START SHOWDOWN ⚔️",tr:"DÜELLOYU BAŞLAT ⚔️",id:"MULAI DUEL ⚔️"},matchSettings:{en:"🎲 MATCH SETTINGS",tr:"🎲 MAÇ AYARLARI",id:"🎲 PENGATURAN MATCH"},
   matchView:{en:"👀 MATCH INFO",tr:"👀 MAÇ BİLGİSİ",id:"👀 INFO MATCH"},viewOnly:{en:"👀 View only — host controls this",tr:"👀 Sadece görüntüleme — host ayarlar",id:"👀 Lihat saja — host yang atur"},
   gamesIn:{en:"Games (tap to toggle)",tr:"Oyunlar (aç/kapa)",id:"Game (ketuk)"},firstToWins:{en:"First to win…",tr:"İlk kaç galibiyet…",id:"Pertama menang…"},
-  mode:{en:"Mode",tr:"Mod",id:"Mode"},tabGames:{en:"Games",tr:"Oyunlar",id:"Game"},tabMode:{en:"Mode",tr:"Mod",id:"Mode"},mode_firstto:{en:"🏆 First to",tr:"🏆 İlk varan",id:"🏆 Pertama"},mode_rounds:{en:"🔁 Rounds",tr:"🔁 Turlar",id:"🔁 Ronde"},mode_chamber:{en:"🎯 One Shot",tr:"🎯 Tek Atış",id:"🎯 Sekali"},
+  mode:{en:"Mode",tr:"Mod",id:"Mode"},tabGames:{en:"🎮 Games",tr:"🎮 Oyunlar",id:"🎮 Game"},tabMode:{en:"🎲 Mode",tr:"🎲 Mod",id:"🎲 Mode"},mode_firstto:{en:"🏆 First to",tr:"🏆 İlk varan",id:"🏆 Pertama"},mode_rounds:{en:"🔁 Rounds",tr:"🔁 Turlar",id:"🔁 Ronde"},mode_chamber:{en:"🎯 One Shot",tr:"🎯 Tek Atış",id:"🎯 Sekali"},
   roundsLab:{en:"How many rounds…",tr:"Kaç tur oynanacak…",id:"Berapa ronde…"},chamberDesc:{en:"One random game — winner takes all 🎯",tr:"Tek rastgele oyun — kazanan her şeyi alır 🎯",id:"Satu game acak — pemenang ambil semua 🎯"},
   drawResult:{en:"It's a DRAW! Both draw a dare 😈",tr:"BERABERE! İkiniz de ceza çekiyor 😈",id:"SERI! Keduanya tarik tantangan 😈"},drawTitle:{en:"🤝 DRAW!",tr:"🤝 BERABERE!",id:"🤝 SERI!"},bothDare:{en:"BOTH OF YOU 😈",tr:"İKİNİZ DE 😈",id:"KALIAN BERDUA 😈"},redrawMine:{en:"🎲 REDRAW MINE",tr:"🎲 KENDİ KARTIM",id:"🎲 KARTUKU"},redrawMineNote:{en:"You can redraw your own card",tr:"Kendi kartını yeniden çekebilirsin",id:"Kamu bisa tarik ulang kartumu"},
   roundOver:{en:"ROUND OVER",tr:"TUR BİTTİ",id:"RONDE SELESAI"},champion:{en:"👑 CHAMPION 👑",tr:"👑 ŞAMPİYON 👑",id:"👑 JUARA 👑"},
   sendLove:{en:"💖 SEND LOVE",tr:"💖 SEVGİ YOLLA",id:"💖 KIRIM CINTA"},redraw:{en:"🎲 REDRAW",tr:"🎲 YENİDEN ÇEK",id:"🎲 TARIK LAGI"},rematch:{en:"REMATCH 🔁",tr:"YENİDEN 🔁",id:"MAIN LAGI 🔁"},
   settings:{en:"SETTINGS",tr:"AYARLAR",id:"PENGATURAN"},sound:{en:"🔊 Sound",tr:"🔊 Ses",id:"🔊 Suara"},music:{en:"🎵 Music",tr:"🎵 Müzik",id:"🎵 Musik"},
   theme:{en:"🎨 Theme",tr:"🎨 Tema",id:"🎨 Tema"},thWood:{en:"Wood",tr:"Ahşap",id:"Kayu"},thPastel:{en:"Pastel",tr:"Pastel",id:"Pastel"},thNight:{en:"Night",tr:"Gece",id:"Malam"},display:{en:"🖥️ Display",tr:"🖥️ Ekran",id:"🖥️ Layar"},dispFull:{en:"Fullscreen",tr:"Tam Ekran",id:"Layar Penuh"},dispMax:{en:"Maximized",tr:"Tam Boyut",id:"Maksimal"},dispWin:{en:"Windowed",tr:"Pencere",id:"Jendela"},
-  tabGeneral:{en:"General",tr:"Genel",id:"Umum"},tabSound:{en:"Sound",tr:"Ses",id:"Suara"},tabDisplay:{en:"Display",tr:"Ekran",id:"Layar"},
+  tabGeneral:{en:"⚙️ General",tr:"⚙️ Genel",id:"⚙️ Umum"},tabSound:{en:"🔊 Sound",tr:"🔊 Ses",id:"🔊 Suara"},tabDisplay:{en:"🖥️ Display",tr:"🖥️ Ekran",id:"🖥️ Layar"},
   language:{en:"🌐 Language",tr:"🌐 Dil",id:"🌐 Bahasa"},close:{en:"CLOSE ✔",tr:"KAPAT ✔",id:"TUTUP ✔"},
   newUpdate:{en:"NEW UPDATE",tr:"YENİ GÜNCELLEME",id:"PEMBARUAN BARU"},restartNow:{en:"🔄 RESTART NOW",tr:"🔄 ŞİMDİ BAŞLAT",id:"🔄 MULAI ULANG"},
   connecting:{en:"Connecting…",tr:"Bağlanıyor…",id:"Menyambungkan…"},firstTo:{en:"First to {n} wins 👑",tr:"İlk {n} galibiyet şampiyon 👑",id:"Pertama menang {n} jadi juara 👑"},
@@ -493,7 +493,7 @@ Net.on('pickChar',m=>{App.oppPick=m.char;App.oppSel=m.char;App.names[m.char]=m.n
 Net.on('unpick',()=>{App.oppPick=null;if(App.screen==='screen-pick')renderPick();else if(App.screen==='screen-lobby')refreshLobby();});
 Net.on('config',m=>{App.pool=m.pool;App.winTarget=m.winTarget;App.mode=m.mode||App.mode;App.roundCount=m.roundCount||App.roundCount;if(App.screen==='screen-lobby')refreshLobby();renderMatchModal();});
 Net.on('dareBoth',m=>{App.loser='both';App.dareBoth={efe:m.efe,mogi:m.mogi};if(App.screen==='screen-dare')showDare();});
-Net.on('dareBothUpd',m=>{if(App.dareBoth){App.dareBoth[m.char]={index:m.index,left:0};if(App.screen==='screen-dare')showDare();}});
+Net.on('dareBothUpd',m=>{if(App.dareBoth){App.dareBoth[m.char]={index:m.index,left:(m.left!=null?m.left:0)};if(App.screen==='screen-dare')showDare();}});
 Net.on('lobbyReady',m=>{App.guestReady=m.r;refreshLobby();});
 Net.on('howto',m=>enterHowto(m.game,m.index));
 Net.on('ready',m=>{Ready.opp=m.r;updateReadyUI();hostCheckReady();});
@@ -634,7 +634,7 @@ function confetti(){const c=$('confetti');c.innerHTML='';const cols=['#dd8b94','
 function showDare(){show('screen-dare');
   if(App.loser==='both'){const de=DARES.efe[App.dareBoth.efe.index],dm=DARES.mogi[App.dareBoth.mogi.index];$('dareWho').textContent=t('bothDare');const meEfe=App.me==='efe';
     $('dareText').innerHTML='<div style="margin-bottom:2cqmin;'+(meEfe?'color:var(--rose2)':'')+'">'+CF.efe+' <b>'+App.names.efe+'</b>'+(meEfe?' ('+t('you')+')':'')+': '+(de[App.lang]||de.en)+'</div><div style="'+(!meEfe?'color:var(--rose2)':'')+'">'+CF.mogi+' <b>'+App.names.mogi+'</b>'+(!meEfe?' ('+t('you')+')':'')+': '+(dm[App.lang]||dm.en)+'</div>';
-    $('btnRedraw').style.display='inline-block';$('btnRedraw').disabled=false;$('btnRedraw').textContent=t('redrawMine');$('dareSeen').textContent=t('redrawMineNote');$('rematchStatus').textContent=Rematch.me?t('rematchWait',{n:App.names[App.opp]}):'';$('btnRematch').disabled=Rematch.me;$('btnRematch').textContent=Rematch.me?'✔':t('rematch');return;}
+    const myLeft=App.dareBoth[App.me]?App.dareBoth[App.me].left:0;$('btnRedraw').style.display='inline-block';$('btnRedraw').disabled=myLeft<=0;$('btnRedraw').textContent=t('redrawMine');$('dareSeen').textContent=t('redrawsLeft',{n:myLeft});$('rematchStatus').textContent=Rematch.me?t('rematchWait',{n:App.names[App.opp]}):'';$('btnRematch').disabled=Rematch.me;$('btnRematch').textContent=Rematch.me?'✔':t('rematch');return;}
   const owner=App.loser,amOwner=App.me===owner;$('dareWho').textContent=t('dareFor',{n:CF[owner]+' '+up(App.names[owner])});$('dareText').textContent=DARES[App.dare.deck][App.dare.index][App.lang]||DARES[App.dare.deck][App.dare.index].en;$('btnRedraw').style.display=amOwner?'inline-block':'none';$('btnRedraw').disabled=App.dare.left<=0;$('dareSeen').textContent=amOwner?t('redrawsLeft',{n:App.dare.left}):t('ownerRedraws',{n:App.names[owner],k:App.dare.left});$('rematchStatus').textContent=Rematch.me?t('rematchWait',{n:App.names[App.opp]}):'';$('btnRematch').disabled=Rematch.me;$('btnRematch').textContent=Rematch.me?'✔':t('rematch');}
 function doRedraw(){if(!App.isHost)return;
   if(App.loser==='both'){App.dareBoth={efe:{index:Math.floor(Math.random()*DARES.efe.length),left:2},mogi:{index:Math.floor(Math.random()*DARES.mogi.length),left:2}};Net.send({t:'dareBoth',efe:App.dareBoth.efe,mogi:App.dareBoth.mogi});Sound.pick();showDare();return;}
@@ -827,7 +827,7 @@ $('btnMatchCfg').onclick=()=>{renderMatchModal();mmTab('games');$('matchModal').
 $('btnLobbyReady').onclick=()=>{if(!App.connected)return;App.guestReady=!App.guestReady;Net.send({t:'lobbyReady',r:App.guestReady});refreshLobby();};
 $('btnStart').onclick=()=>{if(App.isHost&&App.guestReady)startTournament();};
 $('btnReady').onclick=()=>{Ready.me=!Ready.me;$('btnReady').textContent=Ready.me?t('cancel'):t('ready');Net.send({t:'ready',r:Ready.me});updateReadyUI();hostCheckReady();};
-$('btnRedraw').onclick=()=>{if(App.loser==='both'){const deck=DARES[App.me];let idx;do{idx=Math.floor(Math.random()*deck.length);}while(idx===App.dareBoth[App.me].index&&deck.length>1);App.dareBoth[App.me]={index:idx,left:0};Net.send({t:'dareBothUpd',char:App.me,index:idx});Sound.pick();showDare();return;}if(App.me!==App.loser)return;if(App.isHost)doRedraw();else Net.send({t:'redrawReq'});};
+$('btnRedraw').onclick=()=>{if(App.loser==='both'){const mine=App.dareBoth[App.me];if(!mine||mine.left<=0)return;const deck=DARES[App.me];let idx;do{idx=Math.floor(Math.random()*deck.length);}while(idx===mine.index&&deck.length>1);const left=mine.left-1;App.dareBoth[App.me]={index:idx,left:left};Net.send({t:'dareBothUpd',char:App.me,index:idx,left:left});Sound.pick();showDare();return;}if(App.me!==App.loser)return;if(App.isHost)doRedraw();else Net.send({t:'redrawReq'});};
 $('btnRematch').onclick=()=>{if(!App.connected)return;Rematch.me=true;Net.send({t:'rematchReq'});tryRematch();};
 $('btnLoveRes').onclick=sendLove;$('btnLoveChamp').onclick=sendLove;
 $('setBtn').onclick=()=>{Sound.resume();$('modal').classList.add('on');};$('closeSet').onclick=()=>$('modal').classList.remove('on');$('modal').addEventListener('click',e=>{if(e.target.id==='modal')$('modal').classList.remove('on');});
