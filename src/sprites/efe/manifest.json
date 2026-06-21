@@ -1,0 +1,312 @@
+{
+  "fw": 116,
+  "fh": 116,
+  "anchorX": 0.5,
+  "anchorY": 0.7586,
+  "anims": {
+    "idle": {
+      "rows": {
+        "north": {
+          "row": 0,
+          "frames": 4
+        },
+        "northeast": {
+          "row": 1,
+          "frames": 4
+        },
+        "east": {
+          "row": 2,
+          "frames": 4
+        },
+        "southeast": {
+          "row": 3,
+          "frames": 4
+        },
+        "south": {
+          "row": 4,
+          "frames": 4
+        },
+        "southwest": {
+          "row": 5,
+          "frames": 4
+        },
+        "west": {
+          "row": 6,
+          "frames": 4
+        },
+        "northwest": {
+          "row": 7,
+          "frames": 4
+        }
+      }
+    },
+    "walk": {
+      "rows": {
+        "north": {
+          "row": 0,
+          "frames": 8
+        },
+        "northeast": {
+          "row": 1,
+          "frames": 8
+        },
+        "east": {
+          "row": 2,
+          "frames": 8
+        },
+        "southeast": {
+          "row": 3,
+          "frames": 8
+        },
+        "south": {
+          "row": 4,
+          "frames": 8
+        },
+        "southwest": {
+          "row": 5,
+          "frames": 8
+        },
+        "west": {
+          "row": 6,
+          "frames": 8
+        },
+        "northwest": {
+          "row": 7,
+          "frames": 8
+        }
+      }
+    },
+    "run": {
+      "rows": {
+        "north": {
+          "row": 0,
+          "frames": 8
+        },
+        "northeast": {
+          "row": 1,
+          "frames": 8
+        },
+        "east": {
+          "row": 2,
+          "frames": 8
+        },
+        "southeast": {
+          "row": 3,
+          "frames": 8
+        },
+        "south": {
+          "row": 4,
+          "frames": 8
+        },
+        "southwest": {
+          "row": 5,
+          "frames": 8
+        },
+        "west": {
+          "row": 6,
+          "frames": 8
+        },
+        "northwest": {
+          "row": 7,
+          "frames": 8
+        }
+      }
+    },
+    "throw": {
+      "rows": {
+        "north": {
+          "row": 0,
+          "frames": 7
+        },
+        "northeast": {
+          "row": 1,
+          "frames": 6
+        },
+        "east": {
+          "row": 2,
+          "frames": 6
+        },
+        "southeast": {
+          "row": 3,
+          "frames": 6
+        },
+        "south": {
+          "row": 4,
+          "frames": 7
+        },
+        "southwest": {
+          "row": 5,
+          "frames": 6
+        },
+        "west": {
+          "row": 6,
+          "frames": 6
+        },
+        "northwest": {
+          "row": 7,
+          "frames": 6
+        }
+      }
+    },
+    "dash": {
+      "rows": {
+        "north": {
+          "row": 0,
+          "frames": 6
+        },
+        "northeast": {
+          "row": 1,
+          "frames": 6
+        },
+        "east": {
+          "row": 2,
+          "frames": 6
+        },
+        "southeast": {
+          "row": 3,
+          "frames": 6
+        },
+        "south": {
+          "row": 4,
+          "frames": 6
+        },
+        "southwest": {
+          "row": 5,
+          "frames": 6
+        },
+        "west": {
+          "row": 6,
+          "frames": 6
+        },
+        "northwest": {
+          "row": 7,
+          "frames": 6
+        }
+      }
+    },
+    "hurt": {
+      "rows": {
+        "north": {
+          "row": 0,
+          "frames": 4
+        },
+        "northeast": {
+          "row": 1,
+          "frames": 4
+        },
+        "east": {
+          "row": 2,
+          "frames": 4
+        },
+        "southeast": {
+          "row": 3,
+          "frames": 4
+        },
+        "south": {
+          "row": 4,
+          "frames": 4
+        },
+        "southwest": {
+          "row": 5,
+          "frames": 4
+        },
+        "west": {
+          "row": 6,
+          "frames": 4
+        },
+        "northwest": {
+          "row": 7,
+          "frames": 4
+        }
+      }
+    },
+    "carryIdle": {
+      "rows": {
+        "north": {
+          "row": 0,
+          "frames": 5
+        },
+        "northeast": {
+          "row": 1,
+          "frames": 5
+        },
+        "east": {
+          "row": 2,
+          "frames": 5
+        },
+        "southeast": {
+          "row": 3,
+          "frames": 5
+        },
+        "south": {
+          "row": 4,
+          "frames": 5
+        },
+        "southwest": {
+          "row": 5,
+          "frames": 5
+        },
+        "west": {
+          "row": 6,
+          "frames": 5
+        },
+        "northwest": {
+          "row": 7,
+          "frames": 5
+        }
+      }
+    },
+    "carryWalk": {
+      "rows": {
+        "north": {
+          "row": 0,
+          "frames": 9
+        },
+        "northeast": {
+          "row": 1,
+          "frames": 9
+        },
+        "east": {
+          "row": 2,
+          "frames": 9
+        },
+        "southeast": {
+          "row": 3,
+          "frames": 9
+        },
+        "south": {
+          "row": 4,
+          "frames": 9
+        },
+        "southwest": {
+          "row": 5,
+          "frames": 9
+        },
+        "west": {
+          "row": 6,
+          "frames": 9
+        },
+        "northwest": {
+          "row": 7,
+          "frames": 9
+        }
+      }
+    },
+    "lose": {
+      "rows": {
+        "south": {
+          "row": 0,
+          "frames": 4
+        }
+      }
+    },
+    "win": {
+      "rows": {
+        "south": {
+          "row": 0,
+          "frames": 4
+        }
+      }
+    }
+  }
+}

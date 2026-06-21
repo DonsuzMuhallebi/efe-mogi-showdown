@@ -5,6 +5,7 @@ import { rr, el, CHARBUF, drawEfe, drawMogi, buildChars, blitChar, avatarTo } fr
 import * as Pixi from './engine/pixiApp.js';
 import { loadCharacters, Sheets } from './engine/assets.js';
 import { CharSprite } from './engine/charSprite.js';
+import { loadCharacter, dirOf } from './engine/character.js';
 
 "use strict";
 const $=id=>document.getElementById(id);const clamp=(v,a,b)=>v<a?a:v>b?b:v;const lerp=(a,b,t)=>a+(b-a)*t;const dist=(ax,ay,bx,by)=>Math.hypot(ax-bx,ay-by);
@@ -490,5 +491,33 @@ function pixiTest(){
   return true;
 }
 
+/* dev-only: controllable animated Efe in the play area — proves the real PixelLab art
+   end-to-end. Arrows/WASD = walk (8-dir), hold Shift = run, b=throw n=win m=hurt v=dash c=lose. */
+let _efeDemoInit=false,_demoAction=null,_demoRun=false,_efeDemoRunning=false;
+async function efeDemo(){
+  show('screen-game');setVDims();
+  const r=$('playArea').getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);
+  Pixi.layoutPixi(r.width,r.height,dpr,VW,VH);
+  const w=Pixi.getWorld();if(!w){console.warn('[efeDemo] pixi not ready');return false;}
+  if(_efeDemoRunning)return true;_efeDemoRunning=true;
+  w.removeChildren();
+  const efe=await loadCharacter('efe');efe.setScale(1.0);
+  let px=VW*0.5,py=VH*0.72,dir='south',busy=false;
+  w.addChild(efe);
+  if(!_efeDemoInit){_efeDemoInit=true;
+    window.addEventListener('keydown',e=>{if(e.key==='Shift')_demoRun=true;const m={b:'throw',n:'win',m:'hurt',v:'dash',c:'lose'}[e.key.toLowerCase()];if(m)_demoAction=m;});
+    window.addEventListener('keyup',e=>{if(e.key==='Shift')_demoRun=false;});}
+  let last=performance.now();
+  (function tick(now){const dt=Math.min(0.05,(now-last)/1000);last=now;
+    let vx=(Input.right?1:0)-(Input.left?1:0),vy=(Input.down?1:0)-(Input.up?1:0);
+    if(_demoAction&&!busy){busy=true;const a=_demoAction;_demoAction=null;efe.play(a,dir,()=>{busy=false;});setTimeout(()=>{busy=false;},2500);}
+    if(!busy){
+      if(vx||vy){const L=Math.hypot(vx,vy);vx/=L;vy/=L;px=clamp(px+vx*(_demoRun?180:110)*dt,24,VW-24);py=clamp(py+vy*(_demoRun?180:110)*dt,60,VH-8);dir=dirOf(vx,vy)||dir;efe.play(_demoRun?'run':'walk',dir);}
+      else efe.play('idle',dir);
+    }
+    efe.place(px,py);efe.update(dt);Pixi.renderPixi();requestAnimationFrame(tick);})(last);
+  return true;
+}
+
 /* dev-only: expose key objects for debugging/verification (stripped from prod build) */
-if (import.meta.env && import.meta.env.DEV) { try { Object.assign(window, { App, STR, GAMES, QUIZ, Net, Sound, t, applyLang, showDare, Pixi, Sheets, CharSprite, pixiTest }); } catch (e) {} }
+if (import.meta.env && import.meta.env.DEV) { try { Object.assign(window, { App, STR, GAMES, QUIZ, Net, Sound, t, applyLang, showDare, Pixi, Sheets, CharSprite, loadCharacter, dirOf, pixiTest, efeDemo }); window.addEventListener('keydown', e => { if ((e.key === 'p' || e.key === 'P') && !e.repeat) efeDemo(); }); } catch (e) {} }
