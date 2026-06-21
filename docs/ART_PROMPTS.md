@@ -1,32 +1,27 @@
-# Efe & Mogi Showdown — Pixel-Art Prompt Paketi (Aseprite-hazır)
+# Efe & Mogi Showdown — Pixel-Art Prompt Paketi (PixelLab → Aseprite)
 
-> Bu paket, **Efe & Mogi Showdown** (Electron + Vite + PixiJS v8) için pixel-art asset üretmek üzere kopyala-yapıştır hazır İngilizce prompt'lar ve katı (tartışmasız) teknik kurallar verir. Açıklamalar Türkçe; **her üretim promptu İngilizce** `prompt` kod bloğunda (görüntü modelleri İngilizce'de daha iyi çalışır). Bölüm 0 tüm diğer bölümlerin **üstünde** geçerlidir — sonraki promptlar palet/ölçü/export kurallarını tekrar etmez, referans verir.
+> Bu paket, **Efe & Mogi Showdown** (Electron + Vite + PixiJS v8) için **PixelLab** ile pixel-art asset **+ animasyon** üretmek üzere kopyala-yapıştır hazır İngilizce prompt'lar ve katı teknik kurallar verir. PixelLab prompt'tan üretir ve **Aseprite eklentisiyle** açık dosyana düşürür (akış: 0.1). Açıklamalar Türkçe; **her üretim promptu İngilizce** `prompt` kod bloğunda (PixelLab İngilizce'de daha iyi çalışır). Bölüm 0 tüm diğer bölümlerin **üstünde** geçerlidir — sonraki promptlar palet/ölçü/export kurallarını tekrar etmez, referans verir.
 
 ---
 
 # BÖLÜM 0 — NASIL KULLANILIR & GLOBAL KISITLAR
 
-## 0.1 Gerçekçi pipeline — "Aseprite prompt almaz"
+## 0.1 PixelLab → Aseprite → export akışı
 
-**Aseprite bir AI üreticisi değildir, metin promptu kabul etmez.** Bu paketteki promptlar iki şekilde kullanılır:
+Sen **PixelLab** (pixellab.ai) kullanacaksın — prompt'tan pixel-art **ve animasyon** üreten AI aracı; **Aseprite eklentisi** var (Aseprite v1.3+). Bu paketteki promptlar doğrudan PixelLab'e girdidir. PixelLab base'i + animasyonu üretir, Aseprite'a düşürür, sen export kontratıyla çıkarırsın:
 
-1. **AI pixel-art üreticisine** verilir → ham görsel çıkar → **Aseprite'ta temizlenir**; veya
-2. **El çizimi brief'i** olarak okunur → doğrudan Aseprite'ta çizilir.
-
-Her iki yolda da çıktı **mutlaka** aşağıdaki işlem hattından geçer:
-
-| Adım | Ne yapılır | Neden zorunlu |
+| Adım | Nerede | Ne yapılır |
 |---|---|---|
-| **(a) Üret / çiz** | AI ile üret VEYA elde çiz. Referans: `src/sprites/_base/efe.png` & `mogi.png` (64×96 taban). | Kimlik tutarlı kalsın. |
-| **(b) Import** | `File → Import` veya sürükle-bırak; dosya tam hedef pixel boyutunda. | Grid motorun beklediği olmalı. |
-| **(c) Tam boyuta küçült** | `Sprite → Sprite Size`, **Nearest-neighbor**, AA KAPALI. | Bulanıklık/yarım piksel olmaz. |
-| **(d) Palete indeksle** | Paleti (0.2) yükle, `Edit → Replace Color` / Indexed mode. | Tek görsel dil. |
-| **(e) Frame + tag** | Her animasyonu frame'lere böl, **Tag** ata (0.4). | Adapter `from..to` okur. |
-| **(f) Export** | `File → Export Sprite Sheet` (0.5). PNG+JSON → `src/sprites/`. | Yanlış ayar = import kırılır. |
+| **(a) Base üret** | PixelLab | Karakter/nesne base'ini üret. **Reference image** = `src/sprites/_base/{efe,mogi}.png` (kimlik+stil kilidi, 0.7). View = **side**, size = hedef px (0.3). |
+| **(b) Animasyon üret** | PixelLab | Her tag için **Animate** (text veya skeleton): "idle breathing", "running", "throw"… PixelLab frame-tutarlı seti kendi üretir (anchor + kimlik korunur). |
+| **(c) Aseprite'a al** | PixelLab eklentisi | Sonuç açık Aseprite dosyana frame olarak düşer (ya da web'den indir → `File → Import`). |
+| **(d) Palete indeksle** | Aseprite | Paleti (0.2) yükle; gerekiyorsa `Edit → Replace Color`. |
+| **(e) Frame + tag** | Aseprite | Frame'leri kontrol et, **Tag** adlarını **birebir** 0.4'teki gibi koy. |
+| **(f) Export** | Aseprite | `File → Export Sprite Sheet` (0.5). PNG+JSON → `src/sprites/`. |
 
-> **Kısaca: prompt sadece (a)'yı besler.** (b)–(f) her zaman elle yapılır.
-
-> ⚠️ **EN KRİTİK KURAL (AI üreticisi için):** Hiçbir görüntü modeli frame-tutarlı, hizalı, uniform-hücreli bir **sprite sheet** üretemez (anchor kayar, kimlik frame'ler arası değişir, trim bozulur). Bu yüzden çok-kareli promptlarda her "Frame N" **ayrı bir üretim** olarak ele alınır: tek seferde tek poz üret, hepsini aynı base sprite'ı referans alarak Aseprite'ta **elle diz**. "By Rows / uniform cells / single row of N" ifadeleri yalnızca **Aseprite export** bölümünde geçerlidir, AI promptunda DEĞİL.
+> ✅ **PixelLab animasyonu KENDİ üretir** (walk/run/idle/attack…) — her frame'i **elle çizmen GEREKMEZ**. Bölüm 1'deki per-tag promptlar, PixelLab'in **Animate** kutusuna girecek kısa hareket açıklamalarıdır.
+> 📐 **Boyut → frame sayısı:** PixelLab'de sprite büyüdükçe istek başına AZ frame döner (≈32×32→16, ≈128×128→4). 64×96'da tag başına 4-6 frame rahat çıkar; gerekirse uzun tag'i iki istekte üret.
+> 🎯 **Model:** kimlik/stil eşleştirme için **BitForge** (reference-image destekli, küçük→orta); genel/büyük üretim için **PixFlux**.
 
 ## 0.2 ORTAK PALET (kopyala-yapıştır)
 
@@ -166,16 +161,21 @@ Aseprite JSON'ında loop bayrağı yok → loop/fps motorda taşınır; sen doğ
 - **Şeffaf arka plan.** Zemin gölgesi sprite'a değil motorun ayrı `shadow Graphics`'ine ait — sprite'a gölge çizme.
 - **Yarım piksel yok.** Tüm öğeler tam piksel grid'e otursun.
 
-## 0.7 GLOBAL PROMPT SUFFIX (her üretim promptunun sonuna eklenir)
+## 0.7 PixelLab AYARLARI & STİL KİLİDİ
 
-Aşağıdaki suffix tüm promptların ortak kısıtıdır — promptlarda tekrar tekrar yazmamak için **buradan referansla**, AI üreticisine verirken promptun sonuna yapıştır:
+PixelLab stili **metin-suffix ile değil, araç ayarları + reference image** ile kontrol eder. Her üretimde şunları ayarla:
+
+- **Reference image** — `src/sprites/_base/efe.png` / `mogi.png` (karakterler) ya da ilgili base. **En güçlü kimlik+stil kilidi budur; mutlaka ver.** Yeni sahne/prop için ilk ürettiğin asset'i sonrakilere referans yap → tek görsel dil.
+- **View / perspective** — **side** (yan-bakış; oyun 2D side-view). Karakterler **sağa** baksın (motor sola çevirir). 4/8 yön GEREKMEZ.
+- **Size** — hedef px (karakter 64×96; diğerleri 0.3 tablosu).
+- **Outline** — tek renk koyu outline (saf siyah değil). **Shading** — flat / basic. **Detail** — low-medium (küçük px'te okunur, "cozy" his; aşırı detay bulanıklaşır).
+- **Background** — transparent. Anti-alias YOK (0.6).
+
+Aşağıdaki kısa metni promptların sonuna **opsiyonel** olarak ekleyebilirsin (PixelLab'i yönlendirir; asıl kontrol yukarıdaki ayarlar + reference):
 
 ```prompt
-pixel art, hard pixel edges, NO anti-aliasing, NO blur, NO smooth gradients
-(posterize all transitions into discrete color steps), limited fixed palette,
-flat front-on orthographic view (no perspective, no isometric tilt),
-single subject, transparent background (true alpha), no extra text, no watermark,
-no drop shadow outside the subject.
+cozy pixel art, side view facing right, clean 1px dark outline, flat shading,
+limited palette, transparent background, no anti-aliasing, single subject.
 ```
 
 ## 0.8 `[PLACEHOLDER]` ÖZELLEŞTİRME KURALI
@@ -188,7 +188,7 @@ no drop shadow outside the subject.
 
 # BÖLÜM 1 — KARAKTERLER
 
-Her karakter için: bir **master base sprite** + her tag için **ayrı poz promptları**. Her per-animation promptunun başına 0.1'deki kural uygulanır: **her "Frame N" ayrı üretilir, hepsi base sprite referanslı, Aseprite'ta elle dizilir.**
+Her karakter için: bir **master base sprite** promptu + her tag için kısa bir **Animate açıklaması**. Akış (0.1): önce base'i üret (**reference image** = `src/sprites/_base/*.png`), sonra PixelLab **Animate** (text veya skeleton) ile her tag'i üret — **PixelLab frame'leri kendi çıkarır, elle dizmen gerekmez.** Aşağıdaki per-tag prompt blokları, Animate kutusuna girecek hareket açıklamalarıdır.
 
 ### Aseprite katman düzeni (her iki karakter)
 `shadow` (motor ekler, çizme) · `body` · `outfit_accent` · `hair` · `face` · `accessory` (gözlük/fiyonk en üst).
@@ -221,7 +221,7 @@ Identity (keep exact):
 Style: cozy warm pixel art, clean 1px dark outline (not pure black), readable at small size.
 Customization: expression [gentle smile], accessory [round glasses], outfit color
 [cream shirt #f4ecd7], pose [relaxed standing].
-[+ append GLOBAL SUFFIX from 0.7]
+[+ optional style snippet from 0.7 — main style lock is the reference image + PixelLab settings]
 ```
 **Boyut:** 64×96. **Palet:** Efe grubu (0.2). **Knob:** `[expression] [accessory] [outfit color] [pose]`.
 
@@ -333,7 +333,7 @@ Identity (keep exact):
 Style: cozy warm pixel art, clean 1px dark outline (not pure black), readable at small size.
 Customization: expression [sweet smile], accessory [red bow], outfit color
 [light jacket #d3d8df], pose [relaxed standing].
-[+ append GLOBAL SUFFIX from 0.7]
+[+ optional style snippet from 0.7 — main style lock is the reference image + PixelLab settings]
 ```
 **Boyut:** 64×96. **Palet:** Mogi grubu (0.2). **Knob:** `[expression] [accessory] [outfit color] [pose]`.
 
@@ -433,7 +433,7 @@ clearly gripping forward:
 
 Şu an `serif` emoji `fillText` ile çizilen nesnelerin yerine geçecek sprite'lar.
 
-**ORTAK KURALLAR (tüm prop promptları):** transparent PNG; tek nesne, hücrenin TAM ortasında, simetrik kenar boşluğu; engine merkeze çizer (`textAlign=center`); statik tek-kare nesneler **düz PNG** (Export Sprite Sheet DEĞİL); çok-kareli efektler (explosion/splat/steam/fuse) karakter kontratıyla aynı export. **2× çöz kuralı:** kaynak px, engine hedefinin ~2×'i (ekranda net kalsın). Her prompta **0.7 GLOBAL SUFFIX** eklenir.
+**ORTAK KURALLAR (tüm prop promptları):** transparent PNG; tek nesne, hücrenin TAM ortasında, simetrik kenar boşluğu; engine merkeze çizer (`textAlign=center`); statik tek-kare nesneler **düz PNG** (Export Sprite Sheet DEĞİL); çok-kareli efektler (explosion/splat/steam/fuse) karakter kontratıyla aynı export. **2× çöz kuralı:** kaynak px, engine hedefinin ~2×'i (ekranda net kalsın). 0.7'deki PixelLab ayarları (view=side, outline/shading, **reference image**) uygulanır; istersen 0.7'deki kısa prompt ekini de yapıştır.
 
 ---
 
@@ -621,7 +621,7 @@ Tümü → `src/sprites/`. **Not:** bomba/pot/kar topu için engine ek efektleri
 
 # BÖLÜM 3 — HARİTALAR / SAHNELER (5 Sahne, Katmanlı)
 
-Her sahne 4 PNG katman (sky/far/mid/ground) + motorda kod-particle. **Tüm stripler 640 px geniş**; yükseklik: sky 560, far 220, mid 300, ground 120. Hepsi alta hizalı, sol↔sağ dikişsiz. Her prompta **0.7 GLOBAL SUFFIX** eklenir.
+Her sahne 4 PNG katman (sky/far/mid/ground) + motorda kod-particle. **Tüm stripler 640 px geniş**; yükseklik: sky 560, far 220, mid 300, ground 120. Hepsi alta hizalı, sol↔sağ dikişsiz. 0.7'deki PixelLab ayarları (view=side, outline/shading, **reference image**) uygulanır; istersen 0.7'deki kısa prompt ekini de yapıştır.
 
 **SAHNE-ÖZEL KURALLAR (kritik):**
 - **Sky = posterize:** "vertical gradient" değil → `vertical gradient banded into ~6-8 discrete horizontal color steps (posterized, visible bands, NOT smooth)`.
@@ -779,7 +779,7 @@ No rope. [+ GLOBAL SUFFIX]
 
 > **Tema kuralı:** UI 3 temada (Wood/Pastel/Night) CSS `:root` ile yeniden renklenir. Bu yüzden çoğu parça **NÖTR / TINTLENEBİLİR** (saf grayscale, `R=G=B`, hiç hue yok) çizilir; engine `tint` ile temaya uydurur. Hangi parçanın nötr, hangisinin sabit-marka rengi olduğu her promptta yazıyor.
 > **GOLD ailesi (0.2):** base `#e8b34a`, shade `#c98e2e`, highlight `#f3cf78`.
-> Her prompta **0.7 GLOBAL SUFFIX** eklenir.
+> 0.7'deki PixelLab ayarları (view=side, outline/shading, **reference image**) uygulanır; istersen 0.7'deki kısa prompt ekini de yapıştır.
 
 ---
 
