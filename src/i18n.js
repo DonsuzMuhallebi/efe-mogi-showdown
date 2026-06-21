@@ -20,6 +20,7 @@ const STR={
   theme:{en:"🎨 Theme",tr:"🎨 Tema",id:"🎨 Tema"},thWood:{en:"Wood",tr:"Ahşap",id:"Kayu"},thPastel:{en:"Pastel",tr:"Pastel",id:"Pastel"},thNight:{en:"Night",tr:"Gece",id:"Malam"},display:{en:"🖥️ Display",tr:"🖥️ Ekran",id:"🖥️ Layar"},dispFull:{en:"Fullscreen",tr:"Tam Ekran",id:"Layar Penuh"},dispMax:{en:"Maximized",tr:"Tam Boyut",id:"Maksimal"},dispWin:{en:"Windowed",tr:"Pencere",id:"Jendela"},
   tabGeneral:{en:"⚙️ General",tr:"⚙️ Genel",id:"⚙️ Umum"},tabSound:{en:"🔊 Sound",tr:"🔊 Ses",id:"🔊 Suara"},tabDisplay:{en:"🖥️ Display",tr:"🖥️ Ekran",id:"🖥️ Layar"},
   language:{en:"🌐 Language",tr:"🌐 Dil",id:"🌐 Bahasa"},close:{en:"CLOSE ✔",tr:"KAPAT ✔",id:"TUTUP ✔"},
+  quitGame:{en:"🚪 QUIT GAME",tr:"🚪 OYUNDAN ÇIK",id:"🚪 KELUAR"},quitConfirm:{en:"Sure? Klaus will miss you. 🥺",tr:"Emin misin? Klaus seni özleyecek. 🥺",id:"Yakin? Klaus akan merindukanmu. 🥺"},yesBtn:{en:"YES",tr:"EVET",id:"YA"},noBtn:{en:"NO",tr:"HAYIR",id:"TIDAK"},
   newUpdate:{en:"NEW UPDATE",tr:"YENİ GÜNCELLEME",id:"PEMBARUAN BARU"},restartNow:{en:"🔄 RESTART NOW",tr:"🔄 ŞİMDİ BAŞLAT",id:"🔄 MULAI ULANG"},
   connecting:{en:"Connecting…",tr:"Bağlanıyor…",id:"Menyambungkan…"},firstTo:{en:"First to {n} wins 👑",tr:"İlk {n} galibiyet şampiyon 👑",id:"Pertama menang {n} jadi juara 👑"},
   tapReady:{en:"Tap READY so {n} can start ↓",tr:"{n} başlatabilsin diye HAZIR'a bas ↓",id:"Tekan SIAP agar {n} bisa mulai ↓"},

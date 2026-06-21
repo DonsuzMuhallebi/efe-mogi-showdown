@@ -107,6 +107,7 @@
     <div class="tabPanel" data-tabpanel="display">
       <div class="setRow" id="displayRow" style="display:none"><div class="lab"><span data-i18n="display">🖥️ Display</span></div>
         <div class="pillRow"><button class="pillBtn" id="dispFull" data-i18n="dispFull">Fullscreen</button><button class="pillBtn" id="dispMax" data-i18n="dispMax">Maximized</button><button class="pillBtn" id="dispWin" data-i18n="dispWin">Windowed</button></div></div></div>
+    <button id="btnQuitGame" class="alt" data-i18n="quitGame" style="margin-top:.4cqmin">🚪 QUIT GAME</button>
     <button id="closeSet" data-i18n="close">CLOSE ✔</button>
   </div></div>
 
@@ -130,6 +131,12 @@
     <input class="code" id="codeInput" maxlength="4" placeholder="????" style="align-self:center" />
     <button class="alt" id="btnJoin" data-i18n="connect">CONNECT 💘</button>
     <button class="ghost" id="closeJoin" data-i18n="close">CLOSE ✔</button>
+  </div></div>
+
+  <div id="confirmModal"><div class="panel" style="max-width:74cqw;text-align:center">
+    <h3 id="confirmTitle">🥺</h3>
+    <div class="sub" id="confirmText"></div>
+    <div class="row" style="margin-top:1cqmin"><button class="ghost" id="confirmNo" data-i18n="noBtn">NO</button><button class="alt" id="confirmYes" data-i18n="yesBtn">YES</button></div>
   </div></div>
 
   <div id="fx"></div><div id="emoteBanner"></div>

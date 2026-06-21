@@ -101,7 +101,7 @@
   .cell svg{width:62%;height:62%}.cell.win{background:var(--mint2)}
   .turnote{font-size:3.8cqmin;font-weight:700;color:var(--ink)}
   /* memory */
-  .memgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:2cqmin;width:78cqmin;max-width:88cqw}
+  .memgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:2cqmin;width:min(78cqmin,66cqh);max-width:88cqw}
   .memc{aspect-ratio:1;background:linear-gradient(160deg,var(--peach),var(--peach2));border-radius:2.4cqmin;display:flex;align-items:center;justify-content:center;font-size:7cqmin;cursor:pointer;border:.4cqmin solid var(--line);transition:transform .12s}
   .memc.flip{background:var(--card)}.memc.done{opacity:.35}.memc:active{transform:scale(.95)}
   /* simon */
@@ -144,6 +144,8 @@
   #btnCreate:disabled,#btnJoinShow:disabled{opacity:.4;filter:grayscale(.4);cursor:not-allowed;box-shadow:none}
   #modal,#matchModal,#joinModal{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,6,2,.55);z-index:60;padding:6cqmin}
   #modal.on,#matchModal.on,#joinModal.on{display:flex;animation:pop .25s ease}
+  #confirmModal{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(10,6,2,.65);z-index:70;padding:6cqmin}
+  #confirmModal.on{display:flex;animation:pop .25s ease}
   .panel{background:var(--card);border:.6cqmin solid var(--line);border-radius:5cqmin;padding:4cqmin;width:100%;max-width:84cqw;max-height:92cqh;overflow-y:auto;display:flex;flex-direction:column;gap:2.4cqmin;box-shadow:0 2cqmin 6cqmin rgba(0,0,0,.5)}
   .panel h3{font-family:'Baloo 2';font-weight:800;font-size:5cqmin;margin:0;text-align:center;color:var(--gold)}
   .setRow{display:flex;flex-direction:column;gap:1.2cqmin}.setRow .lab{font-size:3.6cqmin;font-weight:600;display:flex;justify-content:space-between}

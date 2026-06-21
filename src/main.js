@@ -106,8 +106,9 @@ function enterPick(){pickSel='mid';App.myPick=null;App.oppPick=null;App.oppSel='
   renderPick();}
 function renderPick(){if(App.screen!=='screen-pick')return;
   ['efe','mid','mogi'].forEach(k=>{const s=$('slot_'+k);if(!s)return;s.classList.toggle('sel',(App.myPick||pickSel)===k);s.classList.toggle('taken',App.oppPick===k||App.oppSel===k);const tr=$('tok_'+k);if(tr)tr.innerHTML='';});
-  const myK=App.myPick||pickSel;const t1=$('tok_'+myK);if(t1)t1.innerHTML+='<span class="tok you">'+t('youCard')+(App.myPick?' ✔':'')+'</span>';
-  const opK=App.oppPick||App.oppSel||'mid';const t2=$('tok_'+opK);if(t2)t2.innerHTML+='<span class="tok opp">'+App.names[App.opp]+(App.oppPick?' ✔':'')+'</span>';
+  const meLab=App.isHost?t('player1'):t('player2'),oppLab=App.isHost?t('player2'):t('player1');
+  const myK=App.myPick||pickSel;const t1=$('tok_'+myK);if(t1)t1.innerHTML+='<span class="tok you">'+meLab+(App.myPick?' ✔':'')+'</span>';
+  const opK=App.oppPick||App.oppSel||'mid';const t2=$('tok_'+opK);if(t2)t2.innerHTML+='<span class="tok opp">'+oppLab+(App.oppPick?' ✔':'')+'</span>';
   $('pLeft').classList.toggle('off',!!App.myPick);$('pRight').classList.toggle('off',!!App.myPick);
   const canConfirm=!App.myPick&&pickSel!=='mid'&&App.oppPick!==pickSel;$('btnPick').disabled=App.myPick?false:!canConfirm;$('btnPick').textContent=App.myPick?t('changePick'):t('confirm2');
   $('pickStatus').textContent=App.myPick?(App.oppPick?'':t('waiting')):'';}
@@ -390,7 +391,7 @@ GAMES.simon={dom:true,world:false,init(rng,seed){this.srng=mulberry32((seed>>>0)
 
 /* input */
 function tryAct(){const n=performance.now();if(n-(Input._actAt||0)<55)return;Input._actAt=n;Input.act=true;}
-window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='f11'){if(window.desktop)window.desktop.toggleFullscreen();e.preventDefault();return;}if(k===' '){if(!e.repeat&&(Round.game==='snow'||Round.game==='tug'||Round.game==='tnt')&&!Round.over)tryAct();e.preventDefault();return;}if(k==='arrowup'||k==='arrowdown'||k==='arrowleft'||k==='arrowright')e.preventDefault();if(e.repeat)return;
+window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(k==='escape'){onEsc();e.preventDefault();return;}if(k==='f11'){if(window.desktop)window.desktop.toggleFullscreen();e.preventDefault();return;}if(k===' '){if(!e.repeat&&(Round.game==='snow'||Round.game==='tug'||Round.game==='tnt')&&!Round.over)tryAct();e.preventDefault();return;}if(k==='arrowup'||k==='arrowdown'||k==='arrowleft'||k==='arrowright')e.preventDefault();if(e.repeat)return;
   if(k==='arrowleft'||k==='a')Input.left=true;if(k==='arrowright'||k==='d')Input.right=true;if(k==='arrowup'||k==='w')Input.up=true;if(k==='arrowdown'||k==='s')Input.down=true;
   if(App.screen==='screen-pick'){if(k==='arrowleft')stepPick(-1);if(k==='arrowright')stepPick(1);if(k==='enter')confirmPick();}});
 window.addEventListener('keyup',e=>{const k=e.key.toLowerCase();if(k==='arrowleft'||k==='a')Input.left=false;if(k==='arrowright'||k==='d')Input.right=false;if(k==='arrowup'||k==='w')Input.up=false;if(k==='arrowdown'||k==='s')Input.down=false;});
@@ -418,6 +419,12 @@ $('btnRedraw').onclick=()=>{if(App.loser==='both'){const mine=App.dareBoth[App.m
 $('btnRematch').onclick=()=>{if(!App.connected)return;Rematch.me=true;Net.send({t:'rematchReq'});tryRematch();};
 $('btnLoveRes').onclick=sendLove;$('btnLoveChamp').onclick=sendLove;
 $('setBtn').onclick=()=>{Sound.resume();$('modal').classList.add('on');};$('closeSet').onclick=()=>$('modal').classList.remove('on');$('modal').addEventListener('click',e=>{if(e.target.id==='modal')$('modal').classList.remove('on');});
+/* ESC toggles settings (closes any open modal first); quit-game asks for confirmation */
+function onEsc(){const cm=$('confirmModal');if(cm&&cm.classList.contains('on')){cm.classList.remove('on');return;}const om=['matchModal','joinModal'].map($).find(m=>m&&m.classList.contains('on'));if(om){om.classList.remove('on');return;}const m=$('modal');if(m.classList.contains('on'))m.classList.remove('on');else{Sound.resume();m.classList.add('on');}}
+function askConfirm(msgKey,onYes){$('confirmText').textContent=t(msgKey);$('confirmModal').classList.add('on');$('confirmYes').onclick=()=>{$('confirmModal').classList.remove('on');onYes();};}
+$('confirmNo').onclick=()=>$('confirmModal').classList.remove('on');
+$('confirmModal').addEventListener('click',e=>{if(e.target.id==='confirmModal')$('confirmModal').classList.remove('on');});
+$('btnQuitGame').onclick=()=>{$('modal').classList.remove('on');askConfirm('quitConfirm',()=>{if(window.desktop&&window.desktop.quit)window.desktop.quit();else window.close();});};
 $('sfxSlider').oninput=e=>{const v=+e.target.value;$('sfxVal').textContent=v+'%';Sound.setSfx(v/100);LS('sfx',v);};
 $('musSlider').oninput=e=>{const v=+e.target.value;$('musVal').textContent=v+'%';Sound.setMus(v/100);LS('mus',v);};$('sfxSlider').onchange=()=>Sound.pick();
 document.querySelectorAll('.langBtn').forEach(b=>b.onclick=()=>{App.lang=b.dataset.lang;applyLang();});

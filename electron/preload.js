@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('desktop', {
   windowed: () => ipcRenderer.send('win-windowed'),
   onFullscreen: (cb) => ipcRenderer.on('win-fs-state', (e, on) => cb(!!on)),
   restart: () => ipcRenderer.send('do-restart'),
+  quit: () => ipcRenderer.send('do-quit'),
   onUpdate: {
     available: (cb) => ipcRenderer.on('update-available', (e, v) => cb(v)),
     progress: (cb) => ipcRenderer.on('update-progress', (e, p) => cb(p)),

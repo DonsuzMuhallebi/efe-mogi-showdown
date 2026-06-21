@@ -61,6 +61,8 @@ ipcMain.on('do-restart', () => {
   try { autoUpdater.quitAndInstall(); }
   catch (e) { app.relaunch(); app.exit(0); }
 });
+// "Quit game" button in the in-game settings.
+ipcMain.on('do-quit', () => { try { app.quit(); } catch (e) { app.exit(0); } });
 
 app.whenReady().then(() => {
   createWindow();
