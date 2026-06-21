@@ -2,6 +2,9 @@ import './styles.css';
 import { STR } from './i18n.js';
 import { Sound } from './audio.js';
 import { rr, el, CHARBUF, drawEfe, drawMogi, buildChars, blitChar, avatarTo } from './characters.js';
+import * as Pixi from './engine/pixiApp.js';
+import { loadCharacters, Sheets } from './engine/assets.js';
+import { CharSprite } from './engine/charSprite.js';
 
 "use strict";
 const $=id=>document.getElementById(id);const clamp=(v,a,b)=>v<a?a:v>b?b:v;const lerp=(a,b,t)=>a+(b-a)*t;const dist=(ax,ay,bx,by)=>Math.hypot(ax-bx,ay-by);
@@ -33,7 +36,7 @@ function fitStage(){setVDims();STAGE.style.width=vpW()+'px';STAGE.style.height=v
 window.addEventListener('resize',fitStage);
 let VW=480,VH=560;function vpW(){return Math.max(window.innerWidth||0,document.documentElement.clientWidth||0,320);}function vpH(){return Math.max(window.innerHeight||0,document.documentElement.clientHeight||0,400);}function landscape(){return vpW()/vpH()>1.25;}function setVDims(){if(landscape()){VW=960;VH=540;}else{VW=480;VH=560;}}
 const cv=$('gcanvas'),ctx=cv.getContext('2d');let CS=1,COX=0,COY=0;
-function fitCanvas(){const r=$('playArea').getBoundingClientRect();if(r.width<2||r.height<2)return;const dpr=Math.min(window.devicePixelRatio||1,2);cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);cv.style.width=r.width+'px';cv.style.height=r.height+'px';const s=Math.min(cv.width/VW,cv.height/VH);CS=s;COX=(cv.width-VW*s)/2;COY=(cv.height-VH*s)/2;ctx.imageSmoothingEnabled=false;}
+function fitCanvas(){const r=$('playArea').getBoundingClientRect();if(r.width<2||r.height<2)return;const dpr=Math.min(window.devicePixelRatio||1,2);cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);cv.style.width=r.width+'px';cv.style.height=r.height+'px';const s=Math.min(cv.width/VW,cv.height/VH);CS=s;COX=(cv.width-VW*s)/2;COY=(cv.height-VH*s)/2;ctx.imageSmoothingEnabled=false;if(Pixi.isReady())Pixi.layoutPixi(r.width,r.height,dpr,VW,VH);}
 function applyVT(){ctx.setTransform(CS,0,0,CS,COX,COY);}
 function clientToV(cx_,cy_){const r=cv.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);const x=(cx_-r.left)*dpr,y=(cy_-r.top)*dpr;return{x:(x-COX)/CS,y:(y-COY)/CS};}
 
@@ -458,6 +461,27 @@ window.addEventListener('load',()=>{buildChars();
   titleArt();applyLang();fitStage();Sound.setMus((mv!=null?mv:45)/100);Sound.setTrack('menu');if(!window.Peer)tStat(t('errNetLib'),'err');});
 buildChars();applyTheme('wood');fitStage();
 
+/* PixiJS engine boot (Phase 0 — additive; loads char sheets, does NOT yet drive any minigame) */
+(async()=>{try{
+  await Pixi.initPixi();
+  await loadCharacters();
+  const pa=$('playArea');if(pa){const r=pa.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);Pixi.layoutPixi(r.width,r.height,dpr,VW,VH);}
+}catch(e){console.error('[pixi boot]',e);}})();
+
+/* dev-only: live placeholder-sprite proof for the Aseprite->Pixi pipeline (Phase 0) */
+function pixiTest(){
+  show('screen-game');setVDims();
+  const r=$('playArea').getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);
+  Pixi.layoutPixi(r.width,r.height,dpr,VW,VH);
+  const w=Pixi.getWorld();if(!w||!Sheets.efe){console.warn('[pixiTest] not ready');return false;}
+  w.removeChildren();
+  const efe=new CharSprite(Sheets.efe);efe.place(Math.round(VW*0.38),VH-28);efe.play('run');efe.face(1);
+  const mogi=new CharSprite(Sheets.mogi);mogi.place(Math.round(VW*0.62),VH-28);mogi.play('idle');mogi.face(-1);
+  w.addChild(efe,mogi);
+  let last=performance.now();
+  (function tick(now){const dt=Math.min(0.05,(now-last)/1000);last=now;efe.update(dt);mogi.update(dt);Pixi.renderPixi();requestAnimationFrame(tick);})(last);
+  return true;
+}
 
 /* dev-only: expose key objects for debugging/verification (stripped from prod build) */
-if (import.meta.env && import.meta.env.DEV) { try { Object.assign(window, { App, STR, GAMES, QUIZ, Net, Sound, t, applyLang, showDare }); } catch (e) {} }
+if (import.meta.env && import.meta.env.DEV) { try { Object.assign(window, { App, STR, GAMES, QUIZ, Net, Sound, t, applyLang, showDare, Pixi, Sheets, CharSprite, pixiTest }); } catch (e) {} }

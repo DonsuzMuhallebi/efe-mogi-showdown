@@ -9,6 +9,7 @@
     "dev": "vite",
     "build": "vite build",
     "gen:sprites": "node tools/gen-base-sprites.mjs",
+    "gen:placeholder": "node tools/gen-placeholder-sheet.mjs",
     "start": "npm run build && electron .",
     "pack": "npm run build && electron-builder --win nsis-web --publish never",
     "portable": "npm run build && electron-builder --win portable --publish never",
