@@ -523,4 +523,6 @@ async function efeDemo(){
 }
 
 /* dev-only: expose key objects for debugging/verification (stripped from prod build) */
-if (import.meta.env && import.meta.env.DEV) { try { Object.assign(window, { App, STR, GAMES, QUIZ, Net, Sound, t, applyLang, showDare, Pixi, Sheets, CharSprite, loadCharacter, dirOf, pixiTest, efeDemo }); window.addEventListener('keydown', e => { if ((e.key === 'p' || e.key === 'P') && !e.repeat) efeDemo(); }); } catch (e) {} }
+if (import.meta.env && import.meta.env.DEV) { try { Object.assign(window, { App, STR, GAMES, QUIZ, Net, Sound, t, applyLang, showDare, Pixi, Sheets, CharSprite, loadCharacter, dirOf, pixiTest, efeDemo }); window.addEventListener('keydown', e => { if ((e.key === 'p' || e.key === 'P') && !e.repeat) efeDemo(); });
+  const _db=document.createElement('button');_db.textContent='▶ EFE DEMO';_db.title='dev: animated Efe (arrows/WASD walk · Shift run · b/n/m/v/c throw/win/hurt/dash/lose)';_db.style.cssText='position:fixed;left:10px;bottom:10px;z-index:9999;font:700 12px system-ui;padding:7px 12px;background:#e8b34a;color:#3a2408;border:2px solid #8a5e18;border-radius:8px;cursor:pointer';_db.onclick=()=>efeDemo();document.body.appendChild(_db);
+} catch (e) {} }
