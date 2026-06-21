@@ -66,12 +66,12 @@ ekran sistemi, i18n, menüler (HTML/CSS) aynen kalır.
 - **Sheet type:** By Rows (sabit grid, trim KAPALI → 64×96 hücreler uniform kalsın)
 - **JSON Data:** Hash, **"Tags" (frameTags) işaretli**
 - **Item Filename:** `{tag}{frame}`
-- **Çıktı:** `assets/sprites/efe.png` + `efe.json`, `assets/sprites/mogi.png` + `mogi.json`
+- **Çıktı:** `src/sprites/efe.png` + `efe.json`, `src/sprites/mogi.png` + `mogi.json` (Vite import eder)
 
 ## 5. Runtime pipeline (benim build edeceğim kısım)
 
 ```
-assets/sprites/*.png + *.json
+src/sprites/*.png + *.json
    → loader (boot'ta preload + "loading" ekranı)
    → Aseprite-JSON adapter  →  Pixi Spritesheet + animasyon haritası
    → AnimatedSprite  →  sprite.play('idle' | 'run' | ...)
@@ -83,7 +83,7 @@ assets/sprites/*.png + *.json
 ## 6. "Bu karakterleri baz alarak" — referans tabanı
 
 Mevcut vektör `drawEfe`/`drawMogi` çıktısını **64×96 PNG taban** olarak render edip
-`assets/sprites/_base/` altına koyacağım. Sen Aseprite'ta bunu import edip üstünden
+`src/sprites/_base/` altına koyacağım. Sen Aseprite'ta bunu import edip üstünden
 pixel-art'a çevirip animasyon frame'lerini çizeceksin (gerçek frame sanatı senin işin;
 altyapı + entegrasyon + taban benim).
 
