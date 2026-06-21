@@ -494,6 +494,8 @@ function pixiTest(){
 /* dev-only: controllable animated Efe in the play area — proves the real PixelLab art
    end-to-end. Arrows/WASD = walk (8-dir), hold Shift = run, b=throw n=win m=hurt v=dash c=lose. */
 let _efeDemoInit=false,_demoAction=null,_demoRun=false,_efeDemoRunning=false;
+const _DV={east:[1,0],west:[-1,0],north:[0,-1],south:[0,1],northeast:[0.71,-0.71],northwest:[-0.71,-0.71],southeast:[0.71,0.71],southwest:[-0.71,0.71]};
+const _ACT={throw:{busy:1.0},win:{busy:2.6},hurt:{busy:1.6},dash:{busy:0.5,move:210},lose:{busy:3.4}};
 async function efeDemo(){
   show('screen-game');setVDims();
   const r=$('playArea').getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);
@@ -501,17 +503,18 @@ async function efeDemo(){
   const w=Pixi.getWorld();if(!w){console.warn('[efeDemo] pixi not ready');return false;}
   if(_efeDemoRunning)return true;_efeDemoRunning=true;
   w.removeChildren();
-  const efe=await loadCharacter('efe');efe.setScale(1.0);
-  let px=VW*0.5,py=VH*0.72,dir='south',busy=false;
+  const efe=await loadCharacter('efe');efe.setScale(1.8);
+  let px=VW*0.5,py=VH*0.78,dir='south',busy=false,busyT=0,dashT=0,dashSpd=0;
   w.addChild(efe);
   if(!_efeDemoInit){_efeDemoInit=true;
     window.addEventListener('keydown',e=>{if(e.key==='Shift')_demoRun=true;const m={b:'throw',n:'win',m:'hurt',v:'dash',c:'lose'}[e.key.toLowerCase()];if(m)_demoAction=m;});
     window.addEventListener('keyup',e=>{if(e.key==='Shift')_demoRun=false;});}
   let last=performance.now();
   (function tick(now){const dt=Math.min(0.05,(now-last)/1000);last=now;
-    let vx=(Input.right?1:0)-(Input.left?1:0),vy=(Input.down?1:0)-(Input.up?1:0);
-    if(_demoAction&&!busy){busy=true;const a=_demoAction;_demoAction=null;efe.play(a,dir,()=>{busy=false;});setTimeout(()=>{busy=false;},2500);}
-    if(!busy){
+    if(busy){busyT-=dt;if(busyT<=0)busy=false;}
+    if(_demoAction&&!busy){const a=_demoAction;_demoAction=null;const cfg=_ACT[a]||{busy:1.0};busy=true;busyT=cfg.busy;efe.play(a,dir);if(cfg.move){dashT=0.3;dashSpd=cfg.move;}}
+    if(dashT>0){const v=_DV[dir]||[0,0];px=clamp(px+v[0]*dashSpd*dt,24,VW-24);py=clamp(py+v[1]*dashSpd*dt,60,VH-8);dashT-=dt;}
+    if(!busy){let vx=(Input.right?1:0)-(Input.left?1:0),vy=(Input.down?1:0)-(Input.up?1:0);
       if(vx||vy){const L=Math.hypot(vx,vy);vx/=L;vy/=L;px=clamp(px+vx*(_demoRun?180:110)*dt,24,VW-24);py=clamp(py+vy*(_demoRun?180:110)*dt,60,VH-8);dir=dirOf(vx,vy)||dir;efe.play(_demoRun?'run':'walk',dir);}
       else efe.play('idle',dir);
     }

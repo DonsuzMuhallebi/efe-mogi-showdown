@@ -7,13 +7,13 @@ const ANIM = {
   idle:      { fps: 6,  loop: true },
   walk:      { fps: 10, loop: true },
   run:       { fps: 14, loop: true },
-  throw:     { fps: 16, loop: false },
+  throw:     { fps: 9,  loop: false },
   dash:      { fps: 18, loop: false },
   hurt:      { fps: 10, loop: false },
   carryIdle: { fps: 6,  loop: true },
   carryWalk: { fps: 10, loop: true },
   win:       { fps: 8,  loop: true },
-  lose:      { fps: 6,  loop: false },
+  lose:      { fps: 4,  loop: false },
 };
 
 // Packed by tools/pack-character.mjs into src/sprites/<name>/{<anim>.png, manifest.json}
