@@ -39,3 +39,4 @@ async function proc(name, { whiteKey = false, trim = false } = {}) {
 await proc('sign.png', { whiteKey: true });       // keep 360x168 aspect, just drop the white bg
 await proc('btn-gold.png', { trim: true });        // crop to the pill so it fills the button box
 await proc('btn-rose.png', { trim: true });
+await proc('btn-wood.png', { trim: true });

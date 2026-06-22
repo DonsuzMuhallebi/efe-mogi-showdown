@@ -483,9 +483,7 @@ function startTitleAnim(){
   };
   const t0=performance.now();
   const loop=now=>{const t=(now-t0)/1000;x.clearRect(0,0,cv2.width,cv2.height);
-    drawOne(_tImg.efe,efeManifest,t,0.27);drawOne(_tImg.mogi,mogiManifest,t,0.73);
-    x.fillStyle=(getComputedStyle(document.documentElement).getPropertyValue('--rose')||'#dd8b94').trim();
-    x.font='800 30px "Baloo 2",sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('VS',cv2.width/2,cv2.height*0.42);
+    drawOne(_tImg.efe,efeManifest,t,0.32);drawOne(_tImg.mogi,mogiManifest,t,0.68);
     _tImg._raf=requestAnimationFrame(loop);};
   const begin=()=>{if(_tImg._raf)return;_tImg._raf=requestAnimationFrame(loop);};
   if(_tImg.efe.complete&&_tImg.mogi.complete)begin();else{_tImg.efe.onload=begin;_tImg.mogi.onload=begin;}
@@ -494,8 +492,11 @@ function startTitleAnim(){
 function startMenuFx(){
   const fx=$('menuFx');if(!fx||fx.dataset.on)return;fx.dataset.on='1';
   const g=document.createElement('div');g.className='mGlow';fx.appendChild(g);
-  for(let i=0;i<3;i++){const c=document.createElement('div');c.className='mCloud';c.style.top=(5+i*9)+'%';c.style.width=(15+i*7)+'cqmin';c.style.opacity=String(0.55-i*0.1);c.style.animationDuration=(48+i*16)+'s';c.style.animationDelay=(-i*18)+'s';fx.appendChild(c);}
-  for(let i=0;i<9;i++){const l=document.createElement('div');l.className='mLeaf';l.style.left=(5+i*10.5)+'%';l.style.width=(2.2+(i%3))+'cqmin';l.style.opacity=String(0.72-(i%3)*0.12);l.style.animationDuration=(8+(i%4)*2.2)+'s';l.style.animationDelay=(-i*1.3)+'s';fx.appendChild(l);}
+  // twinkling string-light glints across the top (positions tuned to the bg bulbs)
+  const lampX=[7,17,28,40,52,63,74,85,93];
+  lampX.forEach((lx,i)=>{const t=document.createElement('div');t.className='mTwinkle';t.style.left=lx+'%';t.style.top=(5+(i%2)*3.5)+'%';t.style.animationDuration=(1.5+(i%3)*0.6)+'s';t.style.animationDelay=(-i*0.45)+'s';fx.appendChild(t);});
+  for(let i=0;i<3;i++){const c=document.createElement('div');c.className='mCloud';c.style.top=(8+i*11)+'%';c.style.width=(16+i*8)+'cqmin';c.style.opacity=String(0.6-i*0.12);c.style.animationDuration=(52+i*18)+'s';c.style.animationDelay=(-i*22)+'s';fx.appendChild(c);}
+  for(let i=0;i<5;i++){const l=document.createElement('div');l.className='mLeaf';l.style.left=(12+i*18)+'%';l.style.width=(2+(i%2)*0.8)+'cqmin';l.style.opacity=String(0.55-(i%2)*0.12);l.style.animationDuration=(10+(i%3)*2.5)+'s';l.style.animationDelay=(-i*2.4)+'s';fx.appendChild(l);}
 }
 window.addEventListener('load',()=>{buildChars();
   const th=LS('theme')||'wood';applyTheme(th);const lg=LS('lang');if(lg)App.lang=lg;const sv=LS('sfx'),mv=LS('mus');if(sv!=null){$('sfxSlider').value=sv;$('sfxVal').textContent=sv+'%';Sound.setSfx(sv/100);}if(mv!=null){$('musSlider').value=mv;$('musVal').textContent=mv+'%';}
