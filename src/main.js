@@ -490,9 +490,16 @@ function startTitleAnim(){
   const begin=()=>{if(_tImg._raf)return;_tImg._raf=requestAnimationFrame(loop);};
   if(_tImg.efe.complete&&_tImg.mogi.complete)begin();else{_tImg.efe.onload=begin;_tImg.mogi.onload=begin;}
 }
+/* animated menu fx layer: lamp glow + drifting clouds + falling leaves (behind the UI) */
+function startMenuFx(){
+  const fx=$('menuFx');if(!fx||fx.dataset.on)return;fx.dataset.on='1';
+  const g=document.createElement('div');g.className='mGlow';fx.appendChild(g);
+  for(let i=0;i<3;i++){const c=document.createElement('div');c.className='mCloud';c.style.top=(5+i*9)+'%';c.style.width=(15+i*7)+'cqmin';c.style.opacity=String(0.55-i*0.1);c.style.animationDuration=(48+i*16)+'s';c.style.animationDelay=(-i*18)+'s';fx.appendChild(c);}
+  for(let i=0;i<9;i++){const l=document.createElement('div');l.className='mLeaf';l.style.left=(5+i*10.5)+'%';l.style.width=(2.2+(i%3))+'cqmin';l.style.opacity=String(0.72-(i%3)*0.12);l.style.animationDuration=(8+(i%4)*2.2)+'s';l.style.animationDelay=(-i*1.3)+'s';fx.appendChild(l);}
+}
 window.addEventListener('load',()=>{buildChars();
   const th=LS('theme')||'wood';applyTheme(th);const lg=LS('lang');if(lg)App.lang=lg;const sv=LS('sfx'),mv=LS('mus');if(sv!=null){$('sfxSlider').value=sv;$('sfxVal').textContent=sv+'%';Sound.setSfx(sv/100);}if(mv!=null){$('musSlider').value=mv;$('musVal').textContent=mv+'%';}
-  titleArt();startTitleAnim();applyLang();fitStage();Sound.setMus((mv!=null?mv:45)/100);Sound.setTrack('menu');if(!window.Peer)tStat(t('errNetLib'),'err');});
+  titleArt();startTitleAnim();startMenuFx();applyLang();fitStage();Sound.setMus((mv!=null?mv:45)/100);Sound.setTrack('menu');if(!window.Peer)tStat(t('errNetLib'),'err');});
 buildChars();applyTheme('wood');fitStage();
 
 /* PixiJS engine boot (Phase 0 — additive; loads char sheets, does NOT yet drive any minigame) */
