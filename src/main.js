@@ -493,8 +493,9 @@ function startMenuFx(){
   const fx=$('menuFx');if(!fx||fx.dataset.on)return;fx.dataset.on='1';
   const g=document.createElement('div');g.className='mGlow';fx.appendChild(g);
   // twinkling string-light glints across the top (positions tuned to the bg bulbs)
-  const lampX=[7,17,28,40,52,63,74,85,93];
-  lampX.forEach((lx,i)=>{const t=document.createElement('div');t.className='mTwinkle';t.style.left=lx+'%';t.style.top=(5+(i%2)*3.5)+'%';t.style.animationDuration=(1.5+(i%3)*0.6)+'s';t.style.animationDelay=(-i*0.45)+'s';fx.appendChild(t);});
+  const lampX=[2.9,7.3,17.5,22.1,26.8,32.1,36.8,42.7,48.7,55,61.3,66.3,72.3,82.9,88.9,93.8];
+  const lampY=[3.2,6.9,13.7,16.1,18.6,20.7,22.7,23.4,23.5,23.2,22.2,19.8,17.9,12.3,7.7,3.8];
+  lampX.forEach((lx,i)=>{const t=document.createElement('div');t.className='mTwinkle';t.style.left=lx+'%';t.style.top=lampY[i]+'%';t.style.animationDuration=(1.4+(i%4)*0.5)+'s';t.style.animationDelay=(-i*0.32)+'s';fx.appendChild(t);});
   for(let i=0;i<3;i++){const c=document.createElement('div');c.className='mCloud';c.style.top=(8+i*11)+'%';c.style.width=(16+i*8)+'cqmin';c.style.opacity=String(0.6-i*0.12);c.style.animationDuration=(52+i*18)+'s';c.style.animationDelay=(-i*22)+'s';fx.appendChild(c);}
   for(let i=0;i<5;i++){const l=document.createElement('div');l.className='mLeaf';l.style.left=(12+i*18)+'%';l.style.width=(2+(i%2)*0.8)+'cqmin';l.style.opacity=String(0.55-(i%2)*0.12);l.style.animationDuration=(10+(i%3)*2.5)+'s';l.style.animationDelay=(-i*2.4)+'s';fx.appendChild(l);}
 }

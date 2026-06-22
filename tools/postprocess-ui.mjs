@@ -36,7 +36,8 @@ async function proc(name, { whiteKey = false, trim = false } = {}) {
   console.log(`${name}: ${w}x${h} -> ${tw}x${th}${whiteKey ? ' white-keyed' : ''}${trim ? ' trimmed' : ''}`);
 }
 
-await proc('sign.png', { whiteKey: true });       // keep 360x168 aspect, just drop the white bg
+await proc('sign.png', { whiteKey: true });       // keep aspect, just drop the white bg
+await proc('trees.png', { whiteKey: true });
 await proc('btn-gold.png', { trim: true });        // crop to the pill so it fills the button box
 await proc('btn-rose.png', { trim: true });
 await proc('btn-wood.png', { trim: true });
