@@ -9,16 +9,27 @@ Add-Type -AssemblyName System.Drawing
 
 # folder name -> engine anim key
 $map = [ordered]@{
-  'BreathingIdle'   = 'idle'
-  'Walking'         = 'walk'
-  'Running'         = 'run'
-  'Throwing'        = 'throw'
-  'Dash'            = 'dash'
-  'Hurt'            = 'hurt'
-  'CarryingIdle'    = 'carryIdle'
-  'CarryingWalking' = 'carryWalk'
-  'Defeat'          = 'lose'
-  'Win'             = 'win'
+  # Efe folder names
+  'BreathingIdle'      = 'idle'
+  'Walking'            = 'walk'
+  'Running'            = 'run'
+  'Throwing'           = 'throw'
+  'Dash'               = 'dash'
+  'Hurt'               = 'hurt'
+  'CarryingIdle'       = 'carryIdle'
+  'CarryingWalking'    = 'carryWalk'
+  'Defeat'             = 'lose'
+  'Win'                = 'win'
+  # Mogi folder names (same anim keys)
+  'IdleBreath'         = 'idle'
+  'RunMogiRun'         = 'run'
+  'ThrowMogi'          = 'throw'
+  'Dashy'              = 'dash'
+  'HurtDizzy'          = 'hurt'
+  'MogiCarry'          = 'carryIdle'
+  'WalkingandCarrying' = 'carryWalk'
+  'DefeatCry'          = 'lose'
+  'WinV'               = 'win'
 }
 # longest-first so 'northeast' matches before 'north'
 $dirs = @('northeast','northwest','southeast','southwest','north','south','east','west')

@@ -6,6 +6,10 @@ import * as Pixi from './engine/pixiApp.js';
 import { loadCharacters, Sheets } from './engine/assets.js';
 import { CharSprite } from './engine/charSprite.js';
 import { loadCharacter, dirOf } from './engine/character.js';
+import efeIdleUrl from './sprites/efe/idle.png';
+import mogiIdleUrl from './sprites/mogi/idle.png';
+import efeManifest from './sprites/efe/manifest.json';
+import mogiManifest from './sprites/mogi/manifest.json';
 
 "use strict";
 const $=id=>document.getElementById(id);const clamp=(v,a,b)=>v<a?a:v>b?b:v;const lerp=(a,b,t)=>a+(b-a)*t;const dist=(ax,ay,bx,by)=>Math.hypot(ax-bx,ay-by);
@@ -464,9 +468,31 @@ if(window.desktop&&window.desktop.onUpdate){
 
 /* boot */
 function titleArt(){const t2=$('titleCv'),c=t2.getContext('2d');c.imageSmoothingEnabled=false;c.clearRect(0,0,t2.width,t2.height);c.drawImage(CHARBUF.efe,20,8,80,110);c.drawImage(CHARBUF.mogi,t2.width-100,8,80,110);c.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--rose')||'#dd8b94';c.font='800 24px Baloo 2,sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText('VS',t2.width/2,60);}
+
+/* animated title: Efe & Mogi breathing-idle (south) on #titleCv (replaces the vector VS art) */
+const _tImg={};
+function startTitleAnim(){
+  const cv2=$('titleCv');if(!cv2)return;const x=cv2.getContext('2d');x.imageSmoothingEnabled=false;
+  if(!_tImg.efe){_tImg.efe=new Image();_tImg.efe.src=efeIdleUrl;}
+  if(!_tImg.mogi){_tImg.mogi=new Image();_tImg.mogi.src=mogiIdleUrl;}
+  const drawOne=(img,man,t,frac)=>{
+    if(!img.complete||!img.naturalWidth)return;
+    const r=man.anims.idle&&man.anims.idle.rows.south;if(!r)return;
+    const fi=Math.floor(t*6)%r.frames,s=1.5,dw=man.fw*s,dh=man.fh*s;
+    x.drawImage(img,fi*man.fw,r.row*man.fh,man.fw,man.fh,cv2.width*frac-dw*0.5,(cv2.height-6)-man.anchorY*dh,dw,dh);
+  };
+  const t0=performance.now();
+  const loop=now=>{const t=(now-t0)/1000;x.clearRect(0,0,cv2.width,cv2.height);
+    drawOne(_tImg.efe,efeManifest,t,0.27);drawOne(_tImg.mogi,mogiManifest,t,0.73);
+    x.fillStyle=(getComputedStyle(document.documentElement).getPropertyValue('--rose')||'#dd8b94').trim();
+    x.font='800 30px "Baloo 2",sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('VS',cv2.width/2,cv2.height*0.42);
+    _tImg._raf=requestAnimationFrame(loop);};
+  const begin=()=>{if(_tImg._raf)return;_tImg._raf=requestAnimationFrame(loop);};
+  if(_tImg.efe.complete&&_tImg.mogi.complete)begin();else{_tImg.efe.onload=begin;_tImg.mogi.onload=begin;}
+}
 window.addEventListener('load',()=>{buildChars();
   const th=LS('theme')||'wood';applyTheme(th);const lg=LS('lang');if(lg)App.lang=lg;const sv=LS('sfx'),mv=LS('mus');if(sv!=null){$('sfxSlider').value=sv;$('sfxVal').textContent=sv+'%';Sound.setSfx(sv/100);}if(mv!=null){$('musSlider').value=mv;$('musVal').textContent=mv+'%';}
-  titleArt();applyLang();fitStage();Sound.setMus((mv!=null?mv:45)/100);Sound.setTrack('menu');if(!window.Peer)tStat(t('errNetLib'),'err');});
+  titleArt();startTitleAnim();applyLang();fitStage();Sound.setMus((mv!=null?mv:45)/100);Sound.setTrack('menu');if(!window.Peer)tStat(t('errNetLib'),'err');});
 buildChars();applyTheme('wood');fitStage();
 
 /* PixiJS engine boot (Phase 0 — additive; loads char sheets, does NOT yet drive any minigame) */
