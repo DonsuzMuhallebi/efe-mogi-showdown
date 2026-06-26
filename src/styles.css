@@ -27,20 +27,24 @@
   @keyframes mCloudDrift{from{left:-25%}to{left:115%}}
   #menuFx .mLeaf{position:absolute;top:0;width:3cqmin;aspect-ratio:1;background:url('./sprites/ui/leaf.png') center/contain no-repeat;image-rendering:pixelated;animation:mLeafFall linear infinite}
   @keyframes mLeafFall{0%{transform:translate(0,-14cqh) rotate(0)}50%{transform:translate(4cqmin,52cqh) rotate(180deg)}100%{transform:translate(-3cqmin,116cqh) rotate(360deg)}}
-  #btnCreate,#btnJoinShow{width:36cqmin;max-width:42cqw;background:url('./sprites/ui/btn-wood.png') no-repeat center/100% 100%;box-shadow:none;border:none;border-radius:0;image-rendering:pixelated;color:#46280f;text-shadow:0 .2cqmin 0 rgba(255,242,208,.5);padding:3.4cqmin 2cqmin;transition:transform .14s cubic-bezier(.2,1.5,.4,1),filter .14s}
-  #btnCreate{filter:brightness(1.07) saturate(1.06)}
-  #btnCreate:hover,#btnJoinShow:hover{filter:brightness(1.13);transform:translateY(-.5cqmin) scale(1.035)}
-  #btnCreate:active,#btnJoinShow:active{transform:translateY(.5cqmin) scale(.99);filter:brightness(1.16)}
+  #btnCreate,#btnJoinShow{width:37cqmin;max-width:42cqw;background:url('./sprites/ui/btn-wood.png') center/cover;background-color:#d99a4e;border:.55cqmin solid #5c3414;border-radius:1.8cqmin;box-shadow:inset 0 .5cqmin .6cqmin rgba(255,236,192,.45),inset 0 -.7cqmin .9cqmin rgba(80,45,18,.42),0 .9cqmin 0 #3f2510,0 1.4cqmin 1.6cqmin rgba(0,0,0,.35);image-rendering:pixelated;color:#4a2a0e;text-shadow:0 .2cqmin 0 rgba(255,240,205,.55);padding:3cqmin 2cqmin;transition:transform .14s cubic-bezier(.2,1.5,.4,1),filter .14s}
+  #btnCreate{filter:brightness(1.06) saturate(1.05)}
+  #btnCreate:hover,#btnJoinShow:hover{filter:brightness(1.12);transform:translateY(-.4cqmin) scale(1.03)}
+  #btnCreate:active,#btnJoinShow:active{transform:translateY(.8cqmin) scale(.99);box-shadow:inset 0 .5cqmin .6cqmin rgba(255,236,192,.4),inset 0 -.5cqmin .7cqmin rgba(80,45,18,.4),0 .2cqmin 0 #3f2510;filter:brightness(1.14)}
   .screen.on{display:flex;animation:pop .3s cubic-bezier(.2,1.3,.4,1)}
   @keyframes pop{from{opacity:0;transform:scale(.97) translateY(1.5cqmin)}to{opacity:1}}
-  .signHang{position:relative;display:flex;flex-direction:column;align-items:center;margin-top:7cqmin;padding-top:4.5cqmin;transform-origin:50% .5cqmin;animation:signSway 5.5s ease-in-out infinite alternate}
-  @keyframes signSway{0%{transform:rotate(-1.5deg)}100%{transform:rotate(1.5deg)}}
-  .signHang .rope{position:absolute;top:0;width:.75cqmin;height:5.6cqmin;background:linear-gradient(#8a5a2c,#5c3414);border-radius:.4cqmin;box-shadow:0 0 0 .12cqmin rgba(0,0,0,.3)}
+  .topRig{position:relative;width:100%;display:flex;flex-direction:column;align-items:center;transform-origin:50% 3cqmin;animation:rigBob 6.5s ease-in-out infinite alternate}
+  @keyframes rigBob{0%{transform:translateY(0) rotate(-.5deg)}100%{transform:translateY(1.1cqmin) rotate(.5deg)}}
+  .mLights{position:absolute;top:0;left:-3%;width:106%;height:16cqmin;background:url('./sprites/ui/lights.png') no-repeat center top/100% auto;image-rendering:pixelated;animation:lightPulse 2.9s ease-in-out infinite alternate}
+  @keyframes lightPulse{0%{filter:brightness(.9)}100%{filter:brightness(1.15)}}
+  .signHang{position:relative;display:flex;flex-direction:column;align-items:center;margin-top:6.5cqmin;padding-top:4.5cqmin}
+  .signHang .rope{position:absolute;top:-1cqmin;width:.8cqmin;height:6.2cqmin;background:linear-gradient(#8a5a2c,#5c3414);border-radius:.4cqmin;box-shadow:0 0 0 .12cqmin rgba(0,0,0,.3)}
   .signHang .rl{left:calc(50% - 24.5cqmin)}
   .signHang .rr{left:calc(50% + 24.5cqmin)}
-  h1.big{margin:0;line-height:1;width:60cqmin;max-width:92cqw;aspect-ratio:360/148;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6cqmin;padding-top:2cqmin;background:url('./sprites/ui/sign.png') no-repeat center/100% 100%;image-rendering:pixelated;filter:drop-shadow(0 1cqmin 1.4cqmin rgba(0,0,0,.5))}
-  h1.big .t1{white-space:nowrap;font-size:5cqmin;color:#fff0c8;text-shadow:0 .35cqmin 0 #6b3a10,0 .7cqmin 0 rgba(0,0,0,.35)}
-  h1.big .t2{white-space:nowrap;font-size:2.7cqmin;letter-spacing:1.7cqmin;color:#5a2e10;text-shadow:0 .25cqmin 0 rgba(255,242,205,.55)}
+  h1.big{margin:0;line-height:1;width:60cqmin;max-width:92cqw;aspect-ratio:360/148;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.15cqmin;padding-top:1.6cqmin;background:url('./sprites/ui/sign.png') no-repeat center/100% 100%;image-rendering:pixelated;filter:drop-shadow(0 1cqmin 1.4cqmin rgba(0,0,0,.5))}
+  h1.big .t1{white-space:nowrap;font-size:4.4cqmin;color:#fff0c8;text-shadow:0 .3cqmin 0 #6b3a10,0 .6cqmin 0 rgba(0,0,0,.35)}
+  h1.big .t2{white-space:nowrap;font-size:2.1cqmin;letter-spacing:1.4cqmin;color:#5a2e10;text-shadow:0 .2cqmin 0 rgba(255,242,205,.55)}
+  h1.big .t3{white-space:nowrap;font-family:'Fredoka',sans-serif;font-weight:600;font-size:1.7cqmin;letter-spacing:.1cqmin;color:#6b3d18;text-shadow:0 .15cqmin 0 rgba(255,242,205,.5)}
   .tagline{font-size:4.2cqmin;color:var(--rose);font-weight:700;margin:0;letter-spacing:.6cqmin}
   .sub{font-size:3.6cqmin;color:var(--ink2);line-height:1.3;margin:0}
   .flags{font-size:7cqmin;letter-spacing:1cqmin}
